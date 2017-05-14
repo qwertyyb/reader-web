@@ -5,7 +5,8 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-
+// var WebpackPwaManifest = require('webpack-pwa-manifest')
+// var path = require('path')
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
@@ -30,6 +31,18 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    // new WebpackPwaManifest({
+    //   name: '知乎日报',
+    //   short_name: '知乎日报',
+    //   description: '知乎日报-基于vue2',
+    //   background_color: '#fff',
+    //   icons: [
+    //     {
+    //       src: path.resolve('src/assets/icons/icon.png'),
+    //       size: '256x256'
+    //     }
+    //   ]
+    // })
   ]
 })
