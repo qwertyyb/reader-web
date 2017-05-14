@@ -67,7 +67,9 @@ export default {
 			<h1 class="headline-title">'+ res.title +'</h1>\
 			<span class="img-source">图片：'+ res.image_source +'</span>\
 			</div>'
-			this.story_body = res.body.replace(findstr, replacestr)
+      var body = res.body.replace(findstr, replacestr);
+      body = body.replace(/src=\"http:/g, 'src="')
+			this.story_body = body
       this.title = res.title
 		}
 	}
