@@ -17,13 +17,10 @@ export default {
   props: ['type'],
   watch: {
     '$route'(to, from) {
-      console.log(to.name, from.name)
       if (to.name === 'Story_detail') {
         this.animationName = 'slide-left'
-        console.log('left')
       } else {
         this.animationName = 'slide-right'
-        console.log('right')
       }
     }
   }
