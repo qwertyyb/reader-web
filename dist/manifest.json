@@ -1,0 +1,16 @@
+{
+  "name": "知乎日报",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "short_name": "知乎日报",
+  "description": "知乎日报-基于vue2",
+  "background_color": "#fff",
+  "icons": [
+    {
+      "src": "icon_256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
