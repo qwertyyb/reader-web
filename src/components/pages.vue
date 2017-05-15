@@ -19,13 +19,13 @@
       <span class="mdl-layout-title">知乎日报</span>
     </div>
     <main class="mdl-layout__content">
-      <section class="mdl-layout__tab-panel" id="scroll-tab-1">
+      <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
         <div class="page-content">
           <!-- Your content goes here -->
           <StoryList type="xc"></StoryList>
         </div>
       </section>
-      <section class="mdl-layout__tab-panel is-active" id="scroll-tab-2">
+      <section class="mdl-layout__tab-panel" id="scroll-tab-2">
         <div class="page-content">
           <!-- Your content goes here -->
           <StoryList type="latest"></StoryList>
