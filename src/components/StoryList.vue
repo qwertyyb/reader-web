@@ -1,24 +1,22 @@
 <template>
   <div class="stories">
     <HomeHeader v-if="type === 'latest'" :stories="top_stories"></HomeHeader>
-    <ul>
-      <li v-for="story in stories" :class="{'mdl-cell--2-col-phone': viewType==='view_array', 'mdl-cell--12-col-phone': viewType==='view_list'}" class="mdl-cell mdl-cell--2-col mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
-          <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          {{ story.title }}
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <router-link :to="{path: '/story_detail/' + story.id}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">阅读</router-link>
-        </div>
-        <div class="mdl-card__menu">
-          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">share</i>
-          </button>
-        </div>
-      </li>
-    </ul>
+    <div v-for="story in stories" :class="{'mdl-cell--2-col-phone': viewType==='view_array', 'mdl-cell--12-col-phone': viewType==='view_list'}" class="mdl-cell mdl-cell--2-col mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
+        <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        {{ story.title }}
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <router-link :to="{path: '/story_detail/' + story.id}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">阅读</router-link>
+      </div>
+      <div class="mdl-card__menu">
+        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">share</i>
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
