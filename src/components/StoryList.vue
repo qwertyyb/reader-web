@@ -1,22 +1,24 @@
 <template>
   <div class="stories">
     <HomeHeader v-if="type === 'latest'" :stories="top_stories"></HomeHeader>
-    <div v-for="story in stories" class="mdl-cell mdl-cell--3-col mdl-cell--4-col-phone mdl-card mdl-shadow--2dp">
-      <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
-        <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
-      </div>
-      <div class="mdl-card__supporting-text">
-        {{ story.title }}
-      </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <router-link :to="{path: '/story_detail/' + story.id}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">阅读</router-link>
-      </div>
-      <div class="mdl-card__menu">
-        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons">share</i>
-        </button>
-      </div>
-    </div>
+    <ul>
+      <li v-for="story in stories" :class="{'mdl-cell--2-col-phone': viewType==='view_array', 'mdl-cell--12-col-phone': viewType==='view_list'}" class="mdl-cell mdl-cell--2-col mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
+          <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          {{ story.title }}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <router-link :to="{path: '/story_detail/' + story.id}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">阅读</router-link>
+        </div>
+        <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">share</i>
+          </button>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -33,13 +35,18 @@ export default {
         latest: 'http://news-at.zhihu.com/api/4/news/latest',
         xc: 'http://news-at.zhihu.com/api/3/section/2'
       },
-      type: 'xc'
+      type: 'xc',
+      viewType: 'view_array'
     }
   },
+  props: ['colCount'],
   watch: {
     '$route'(to, from) {
       if(to.name === 'StoryList'){
         this.type = to.params.type
+      }
+      if(to.query) {
+        this.viewType = to.query.viewType
       }
     },
     'type'(to, from) {
@@ -48,11 +55,12 @@ export default {
   },
   components: { HomeHeader },
   created() {
+    this.type = this.$route.params.type || 'xc'
+    this.viewType = this.$route.query.viewType || 'view_array'
     this.getStoryList()
   },
   methods: {
     getStoryList () {
-      console.log(this.type)
       var xmlHttp = new XMLHttpRequest()
       var _this = this
       xmlHttp.onreadystatechange = function () {
@@ -88,5 +96,9 @@ export default {
 
 .mdl-card .mdl-card__menu {
   color: #fff;
+}
+.mdl-card__supporting-text {
+  max-height: 32px;
+  width: auto;
 }
 </style>
