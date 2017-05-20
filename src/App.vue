@@ -1,7 +1,7 @@
 <template>
   <transition v-bind:name="animationName">
     <keep-alive>
-      <router-view :type="type"></router-view>
+      <router-view></router-view>
     </keep-alive>
   </transition>
 </template>
@@ -14,10 +14,9 @@ export default {
       animationName: 'fade',
     }
   },
-  props: ['type'],
   watch: {
     '$route'(to, from) {
-      if (to.name === 'Story_detail') {
+      if (to.name === 'StoryDetail') {
         this.animationName = 'slide-left'
       } else {
         this.animationName = 'slide-right'
@@ -28,6 +27,9 @@ export default {
 </script>
 
 <style>
+body {
+  overflow-x: hidden;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity .5s

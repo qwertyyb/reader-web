@@ -1,7 +1,7 @@
 <template>
   <div class="stories">
     <HomeHeader v-if="type === 'latest'" :stories="top_stories"></HomeHeader>
-    <div v-for="story in stories" class="mdl-cell mdl-cell--3-col mdl-cell--2-col-phone mdl-card mdl-shadow--2dp">
+    <div v-for="story in stories" class="mdl-cell mdl-cell--3-col mdl-cell--4-col-phone mdl-card mdl-shadow--2dp">
       <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
         <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
       </div>
@@ -32,23 +32,39 @@ export default {
       urls: {
         latest: 'http://news-at.zhihu.com/api/4/news/latest',
         xc: 'http://news-at.zhihu.com/api/3/section/2'
-      }
+      },
+      type: 'xc'
     }
   },
-  props: ['type'],
+  watch: {
+    '$route'(to, from) {
+      if(to.name === 'StoryList'){
+        this.type = to.params.type
+      }
+    },
+    'type'(to, from) {
+      this.getStoryList()
+    }
+  },
   components: { HomeHeader },
   created() {
-    var xmlHttp = new XMLHttpRequest()
-    var _this = this
-    xmlHttp.onreadystatechange = function () {
-      if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-        var res = JSON.parse(xmlHttp.responseText)
-        _this.stories = res.stories
-        _this.top_stories = res.top_stories
+    this.getStoryList()
+  },
+  methods: {
+    getStoryList () {
+      console.log(this.type)
+      var xmlHttp = new XMLHttpRequest()
+      var _this = this
+      xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+          var res = JSON.parse(xmlHttp.responseText)
+          _this.stories = res.stories
+          _this.top_stories = res.top_stories
+        }
       }
+      xmlHttp.open('GET', 'https://bird.ioliu.cn/v1?url=' + this.urls[this.type])
+      xmlHttp.send()
     }
-    xmlHttp.open('GET', 'https://bird.ioliu.cn/v1?url=' + this.urls[this.type])
-    xmlHttp.send()
   }
 }
 </script>

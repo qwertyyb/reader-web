@@ -3,7 +3,7 @@
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header">
       <div class="mdl-layout-icon">
-        <button class="mdl-button mdl-button--icon">
+        <button class="mdl-button mdl-button--icon"@click="back">
           <i class="material-icons" style="font-size: 24px">keyboard_arrow_left</i>
         </button>
       </div>
@@ -38,7 +38,8 @@ export default {
 	},
   watch: {
     '$route'(to, from) {
-      this.id = to.params.id
+      if(to.name === 'StoryDetail')
+        this.id = to.params.id
     },
     'id'(to, from) {
       this.getStory()
@@ -71,7 +72,10 @@ export default {
       body = body.replace(/src=\"http:/g, 'src="')
 			this.story_body = body
       this.title = res.title
-		}
+		},
+    back () {
+      history.go(-1)
+    }
 	}
 }
 

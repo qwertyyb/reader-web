@@ -29,20 +29,9 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
+      favicon: 'src/assets/icons/icon.png',
       inject: true
     }),
-    new FriendlyErrorsPlugin(),
-    // new WebpackPwaManifest({
-    //   name: '知乎日报',
-    //   short_name: '知乎日报',
-    //   description: '知乎日报-基于vue2',
-    //   background_color: '#fff',
-    //   icons: [
-    //     {
-    //       src: path.resolve('src/assets/icons/icon.png'),
-    //       size: '256x256'
-    //     }
-    //   ]
-    // })
+    new FriendlyErrorsPlugin()
   ]
 })

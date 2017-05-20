@@ -2,7 +2,7 @@
   <div class="top-stories mdl-cell mdl-cell--12-col" @mouseover="stopInterval" @mouseleave="startInterval">
     <div class="container">
       <div class="imgs">
-        <div class="img" v-for="story, index in stories" :class="{'is-active': index === curIndex, 'is-leaving': curIndex===0?index===4:index+1 === curIndex}" :key="index">
+        <div class="img" v-for="story, index in stories" :class="{'is-active': index === curIndex, 'is-leaving': (index+1)%5 === curIndex }" :key="index">
           <router-link :to="{path: '/story_detail/'+story.id}">
             <img :src="story.image" :alt="story.title">
             <p class="title">{{ story.title }}</p>
@@ -32,13 +32,6 @@ export default {
   },
   props: ['stories'],
   watch: {
-    // 'curIndex'(to, from) {
-    //   if(to>from){
-    //     this.transitionName = 'slide-left'
-    //   }else{
-    //     this.transitionName = 'slide-right'
-    //   }
-    //},
     stories (to) {
       if(to.length>0){
         this.startInterval()
@@ -73,9 +66,9 @@ export default {
     overflow: hidden;
     .img.is-active
       transform: translate(0, 0);
-      z-index: 0;
+      opacity: 1;
     .img.is-leaving
-      transform: translate(-640px, 0)
+      transform: translate(-640px, 0);
     .img 
       position: absolute;
       width: 100%;
@@ -83,7 +76,7 @@ export default {
       max-height: 375px;
       transform: translate(640px, 0);
       overflow: hidden;
-      z-index: -1;
+      opacity: 0;
       transition: all .6s;
       img 
         width: 100%;
