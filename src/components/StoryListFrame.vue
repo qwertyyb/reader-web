@@ -3,7 +3,7 @@
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
-        <span class="mdl-layout-title">知乎日报</span>
+        <span class="mdl-layout-title">{{ title }}</span>
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation. We hide it in small screens. -->
         <nav class="mdl-navigation">
@@ -22,9 +22,6 @@
                 <input type="checkbox" id="switch-model" class="mdl-switch__input" checked>
               </label>
             </li>
-            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>
-            <li disabled class="mdl-menu__item">Disabled Action</li>
-            <li class="mdl-menu__item">Yet Another Action</li>
           </ul>
         </nav>
       </div>
@@ -32,8 +29,14 @@
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">知乎日报</span>
       <nav class="mdl-navigation"@click="hideDrawer">
-        <router-link :to="{path: '/story/xc', query: {viewType: viewType}}" class="mdl-navigation__link is-active">瞎扯</router-link>
-        <router-link to="/story/latest" class="mdl-navigation__link">首页</router-link>
+        <router-link :to="{path: '/story/xc'}" class="mdl-navigation__link is-active">
+          <i class="material-icons">toys</i>&nbsp;&nbsp;&nbsp;&nbsp;
+          瞎扯
+        </router-link>
+        <router-link to="/story/latest" class="mdl-navigation__link">
+          <i class="material-icons">account_balance</i>&nbsp;&nbsp;&nbsp;&nbsp;
+          首页
+        </router-link>
     </nav>
     </div>
     <main class="mdl-layout__content">
@@ -48,12 +51,23 @@
 </template>
 
 <script>
-import StoryList from './StoryList'
 export default {
-  components: { StoryList },
   data () {
     return {
-      viewType: 'view_array'
+      viewType: 'view_array',
+      title: '瞎扯'
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      if(to.name === 'StoryList'){
+        switch (to.params.type) {
+          case 'latest': this.title = '首页'
+            break
+          case 'xc' : this.title = '瞎扯'
+            break
+        }
+      }
     }
   },
   methods: {
@@ -79,5 +93,8 @@ export default {
 }
 .mdl-navigation {
   position: relative;
+}
+.mdl-layout__drawer .mdl-layout-title {
+  background-color: rgb(33,150,243);
 }
 </style>

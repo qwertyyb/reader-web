@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import StoryListFrame from '@/components/StoryListFrame'
-import StoryList from '@/components/StoryList'
-import Storydetail from '@/components/StoryDetail'
+const StoryListFrame = resolve => require(['@/components/StoryListFrame'], resolve)
+const StoryList = resolve => require(['@/components/StoryList'], resolve)
+const StoryDetail = resolve => require(['@/components/StoryDetail'], resolve)
 
 Vue.use(Router)
 
@@ -20,6 +20,6 @@ export default new Router({
   }, {
     path: '/story_detail/:id',
     name: 'StoryDetail',
-    component: Storydetail
+    component: StoryDetail
   }]
 })
