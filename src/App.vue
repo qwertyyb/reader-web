@@ -16,7 +16,7 @@ export default {
   },
   watch: {
     '$route'(to, from) {
-      if (to.name === 'StoryDetail') {
+      if (to.name === 'StoryDetail' || to.name === 'MomentDetail') {
         this.animationName = 'slide-left'
       } else {
         this.animationName = 'slide-right'

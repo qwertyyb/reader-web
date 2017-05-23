@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "analyz": "set npm_config_report=true && npm run build"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",

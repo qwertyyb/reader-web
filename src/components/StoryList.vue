@@ -2,7 +2,7 @@
   <div class="stories">
     <HomeHeader v-if="type === 'latest'" :stories="top_stories"></HomeHeader>
     <div v-for="story in stories" :class="{'mdl-cell--2-col-phone': viewType==='view_array', 'mdl-cell--12-col-phone': viewType==='view_list'}" class="mdl-cell mdl-cell--2-col mdl-card mdl-shadow--2dp">
-      <div class="mdl-card__title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
+      <div class="mdl-card__title story-title" v-bind:style="{ backgroundImage: 'url('+story.images[0]+')'}">
         <h2 class="mdl-card__title-text">{{ story.display_date }}</h2>
       </div>
       <div class="mdl-card__supporting-text">
@@ -80,7 +80,7 @@ export default {
   display: inline-block;
 }
 
-.page-content .mdl-card__title {
+.story-title.mdl-card__title {
   color: #fff;
   padding-top: 60%;
   background-image: url(https://pic2.zhimg.com/v2-0296877f8f0e3d3d1ffd1e51dc35d909.jpg);
@@ -96,7 +96,7 @@ export default {
   color: #fff;
 }
 .mdl-card__supporting-text {
-  max-height: 32px;
+  max-height: 50px;
   width: auto;
 }
 </style>

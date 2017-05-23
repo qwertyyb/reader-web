@@ -37,6 +37,10 @@
           <i class="material-icons">account_balance</i>&nbsp;&nbsp;&nbsp;&nbsp;
           首页
         </router-link>
+        <router-link to="/moment/djx" class="mdl-navigation__link">
+          <i class="material-icons">account_balance</i>&nbsp;&nbsp;&nbsp;&nbsp;
+          打鸡血
+        </router-link>
     </nav>
     </div>
     <main class="mdl-layout__content">

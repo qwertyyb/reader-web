@@ -34,6 +34,13 @@ module.exports = {
             pathRewrite: {
                 '^/news-at': ''
             }
+        },
+        '/moment': {
+            target: 'https://moment.douban.com/api',
+            changeOrigin: true,
+            pathRewrite: {
+                '^/moment': ''
+            }
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
