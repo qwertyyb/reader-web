@@ -1,10 +1,5 @@
 <template>
-  <el-tabs v-model="activeName">
-    <el-tab-pane label="瞎扯吐槽" name="xc">
-      <List :list="xcList" :get-more="getMore" @click="getDetail" v-show="!showDetail"></List>
-      <Detail :id="curId" v-show="showDetail"></Detail>
-    </el-tab-pane>
-  </el-tabs>
+  <List :list="xcList" :get-more="getMore" @click="getDetail" class="list-com"></List>
 </template>
 
 <script>
@@ -19,7 +14,6 @@ export default {
   },
   data () {
     return {
-      activeName: 'xc',
       xcList: [],
       xcTimestamp: 0,
       curId: -1,
@@ -37,17 +31,32 @@ export default {
         done('success')
       } catch (err) {
         done('fail')
+        this.$notify.error({
+          title: '错误',
+          message: '获取信息错误'
+        })
       }
     },
-    async getDetail (item) {
+    getDetail (item) {
       this.curId = item.id
       this.showDetail = true
+      this.$router.push({ path: '/' + item.id })
     }
   },
   async created () {
-    let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2')
-    this.xcList = res.data.stories
-    this.xcTimestamp = res.data.timestamp
+    let loading = this.$loading({ target: '.list-com', body: true, lock: true })
+    try {
+      let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2')
+      this.xcList = res.data.stories
+      this.xcTimestamp = res.data.timestamp
+      loading.close()
+    } catch(err) {
+      loading.close()
+      this.$notify.error({
+        title: '错误',
+        message: '获取信息错误'
+      })
+    }
   }
 }
 </script>

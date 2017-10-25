@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
 	name: 'story_detail',
@@ -16,47 +17,54 @@ export default {
 	},
   props: {
     id: {
-      type: Number,
-      default: -1
+      type: String,
+      default: 0
     }
   },
   watch: {
     'id' (newId) {
-      if (newId < 0) {
+      if (Number(newId) < 0) {
         return
       }
-      this.getStory()
+      this.getStory(newId)
     }
   },
 	methods: {
-    getStory() {
-      var _this = this;
-      var xmlHttp = new XMLHttpRequest;
-      xmlHttp.onreadystatechange = function(){
-        if( xmlHttp.readyState==4 && xmlHttp.status == 200){
-          var res = JSON.parse(xmlHttp.responseText);
-          _this.insertImage(res)
-        }
+    async getStory(id) {
+      let loading = this.$loading({ target: '.detail-container', body: true, lock: true })
+      try {
+        let result = await axios.get('https://bird.ioliu.cn/v1?url=http://news-at.zhihu.com/api/4/news/' + id)
+        let data = result.data
+        // 插入最上面的大图
+        var findstr = '<div class="img-place-holder"></div>'
+        var replacestr = '<div class="img-place-holder">\
+        <img src=' + data.image +' />\
+        <h1 class="headline-title">'+ data.title +'</h1>\
+        <span class="img-source">图片：'+ data.image_source +'</span>\
+        </div>'
+        var body = data.body.replace(findstr, replacestr);
+        body = body.replace(/src=\"http:/g, 'src="')
+        this.content = body
+        loading.close()
+      } catch (err) {
+        loading.close()
+        this.$notify.error({
+          title: '错误',
+          message: '遇到错误'
+        })
       }
-      xmlHttp.open('GET', 'https://bird.ioliu.cn/v1?url=http://news-at.zhihu.com/api/4/news/' + this.id, true);
-      xmlHttp.send();
-    },
-		insertImage (res) {
-			var findstr = '<div class="img-place-holder"></div>'
-			var replacestr = '<div class="img-place-holder">\
-			<img src=' + res.image +' />\
-			<h1 class="headline-title">'+ res.title +'</h1>\
-			<span class="img-source">图片：'+ res.image_source +'</span>\
-			</div>'
-      var body = res.body.replace(findstr, replacestr);
-      body = body.replace(/src=\"http:/g, 'src="')
-      this.content = body
-		}
-	}
+    }
+  },
+  created () {
+    this.getStory(this.id)
+  }
 }
 </script>
 
 <style>
+.detail-container {
+  margin-top: 1px;
+}
 /*  */
 article,
 aside,
@@ -1059,7 +1067,7 @@ hr {
 }
 
 
-p {
+.detail-container p {
   margin: 20px 0 !important;
 }
 
