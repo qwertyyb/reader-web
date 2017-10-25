@@ -27,6 +27,7 @@ export default {
         return
       }
       this.getStory(newId)
+      document.body.scrollTop = 0
     }
   },
 	methods: {
@@ -56,7 +57,11 @@ export default {
     }
   },
   created () {
+    console.log(this.$router)
     this.getStory(this.id)
+  },
+  mounted () {
+    document.body.scrollTop = 0
   }
 }
 </script>
