@@ -27,12 +27,13 @@ export default {
       } else if (to.name === 'index' && from.name === 'detail' && localStorage.scroll && localStorage) {
         let scrolled = false
         let docHeight = Number(localStorage.docHeight)
-        let scrollTop = Number(localStorage.scroll)
+        let times = 0
         let interval = setInterval(() => {
-          if (scrolled) {
+          if (scrolled || times > 10) {
             clearInterval(interval)
             return
           }
+          times++
           if (document.body.offsetHeight === docHeight) {
             document.body.scrollTop = Number(localStorage.scroll)
             scrolled = true
