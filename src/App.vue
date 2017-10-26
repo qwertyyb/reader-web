@@ -1,8 +1,9 @@
 <template>
   <div class="layout">
-    <el-menu theme="dark" default-active="xc" mode="horizontal" class="el-menu">
-      <el-menu-item index="xc">瞎扯</el-menu-item>
+    <el-menu theme="dark" default-active="xc" mode="horizontal" class="menu">
+      <el-menu-item index="xc" class="menu-title">瞎扯</el-menu-item>
     </el-menu>
+    <div class="fixed-header-behind"></div>
     <transition v-bind:name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
       <keep-alive>
         <router-view></router-view>
@@ -64,5 +65,17 @@ body {
 .slide-right-enter {
   transform: translate(-500px, 0);
   transition: 0.4s;
+}
+.layout .fixed-header-behind {
+  height: 60px;
+}
+.layout .menu {
+  box-shadow: 0 5px 4px grey;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+.layout .menu-title {
+  font-size: 24px;
 }
 </style>
