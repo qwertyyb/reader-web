@@ -5,7 +5,7 @@ import Vue from 'vue'
 import router from './router'
 import Views from './App'
 import {Menu, MenuItem, Loading, Notification} from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+// import 'element-ui/lib/theme-default/index.css'
 
 Vue.config.productionTip = false
 Vue.use(Menu)
