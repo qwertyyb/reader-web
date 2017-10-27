@@ -3,12 +3,13 @@
     <el-menu theme="dark" default-active="xc" mode="horizontal" class="menu">
       <el-menu-item index="xc" class="menu-title">瞎扯</el-menu-item>
     </el-menu>
-    <div class="fixed-header-behind"></div>
-    <transition v-bind:name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </transition>
+    <div class="main-content">
+      <transition v-bind:name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -51,7 +52,7 @@ export default {
   margin: 0;
   padding: 0;
 }
-body {
+body, .layout {
   overflow-x: hidden;
 }
 
@@ -66,11 +67,13 @@ body {
   transform: translate(-500px, 0);
   transition: 0.4s;
 }
-.layout .fixed-header-behind {
-  height: 60px;
+.layout .main-content {
+  padding-top: 60px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .layout .menu {
-  box-shadow: 0 5px 4px grey;
+  box-shadow: 0 3px 6px #aaa;
   position: fixed;
   width: 100%;
   z-index: 10;

@@ -4,11 +4,16 @@
 import Vue from 'vue'
 import router from './router'
 import Views from './App'
-import ElementUI from 'element-ui'
+import {Menu, MenuItem, Loading, Notification} from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
 Vue.config.productionTip = false
-Vue.use(ElementUI)
+Vue.use(Menu)
+Vue.use(MenuItem)
+Vue.use(Loading)
+
+Vue.prototype.$notify = Notification
+Vue.prototype.$loading = Loading.service
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

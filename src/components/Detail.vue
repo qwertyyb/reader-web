@@ -1,7 +1,5 @@
 <template>
-  <main class="detail-container">
-    <div v-html="content">
-    </div>
+  <main class="detail-container" v-html="content">
   </main>
 </template>
 
