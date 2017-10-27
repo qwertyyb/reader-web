@@ -27,7 +27,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new WebpackPwaManifest({
-      name: '瞎扯-如何正确的吐糟',
+      name: '瞎扯 如何正确的吐糟',
       short_name: '瞎扯',
       description: '来处知乎日报的瞎扯栏目，让我们来一起学习如何正确的吐糟',
       background_color: '#fff',

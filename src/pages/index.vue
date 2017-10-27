@@ -5,12 +5,10 @@
 <script>
 import List from '@/components/List'
 import axios from 'axios'
-import Detail from '@/components/Detail'
 
 export default {
   components: {
-    List,
-    Detail
+    List
   },
   data () {
     return {

@@ -4,7 +4,7 @@
       <el-menu-item index="xc" class="menu-title">瞎扯</el-menu-item>
     </el-menu>
     <div class="main-content">
-      <transition v-bind:name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
+      <transition :name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
         <keep-alive>
           <router-view></router-view>
         </keep-alive>
@@ -52,20 +52,20 @@ export default {
   margin: 0;
   padding: 0;
 }
-body, .layout {
-  overflow-x: hidden;
+body {
+  overflow-x: hidden!important;
 }
 
 .slide-left-enter,
 .slide-right-leave-active {
-  transform: translate(500px, 0);
-  transition: 0.4s;
+  transform: translate(800px, 0);
+  transition: 0.6s;
 }
 
 .slide-left-leave-active,
 .slide-right-enter {
-  transform: translate(-500px, 0);
-  transition: 0.4s;
+  transform: translate(-800px, 0);
+  transition: 0.6s;
 }
 .layout .main-content {
   padding-top: 60px;

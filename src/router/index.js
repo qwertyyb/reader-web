@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/pages/index'
-import Detail from '@/components/Detail'
+const Detail = resolve => require(['@/pages/Detail'], resolve)
 
 Vue.use(Router)
 
