@@ -1,5 +1,5 @@
 <template>
-  <main class="detail-container" v-html="content">
+  <main class="detail-container" id="detail" v-html="content">
   </main>
 </template>
 
@@ -20,12 +20,12 @@ export default {
     }
   },
   watch: {
-    'id' (newId) {
+    async 'id' (newId) {
       if (Number(newId) < 0) {
         return
       }
       this.getStory(newId)
-      document.body.scrollTop = 0
+      window.scrollTo(0, 0)
     }
   },
 	methods: {
@@ -55,11 +55,10 @@ export default {
     }
   },
   created () {
-    console.log(this.$router)
     this.getStory(this.id)
   },
   mounted () {
-    document.body.scrollTop = 0
+    window.scrollTo(0, 0)
   }
 }
 </script>
