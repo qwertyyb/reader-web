@@ -28,13 +28,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/news-at': {
-            target: 'http://news-at.zhihu.com',
-            changeOrigin: true,
-            pathRewrite: {
-                '^/news-at': ''
-            }
-        },
         '/moment': {
             target: 'https://moment.douban.com/api',
             changeOrigin: true,
