@@ -34,4 +34,11 @@ npm run build
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Question 问题  
+- 关于知乎图片防盗链的解决方法  
+在 `HTML` 的 `head` 中添加如下代码即可
+```
+<meta name="referrer" content="never">
+```
+- 关于跨域问题的解决方法  
+代理：https://github.com/xCss/JsonBird/wiki
