@@ -60,7 +60,4 @@ export default {
 </script>
 
 <style>
-/* .el-tabs__header {
-  margin-bottom: 0!important;
-} */
 </style>

@@ -5,7 +5,7 @@ import Vue from 'vue'
 import router from './router'
 import Views from './App'
 import {Menu, MenuItem, Loading, Notification} from 'element-ui'
-// import 'element-ui/lib/theme-default/index.css'
+require('offline-plugin/runtime').install()
 
 Vue.config.productionTip = false
 Vue.use(Menu)
