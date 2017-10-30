@@ -1,14 +1,16 @@
 CACHE MANIFEST
-#ver:2017-10-29 23:06:50
+#ver:2017-10-30 23:51:06
 #plugin:4.8.4
 
 CACHE:
 ./static/fonts/element-icons.b02bdc1.ttf
-./static/js/0.df9cd843348ef889b419.js
-./static/js/vendor.f5e152141d147f665439.js
-./static/js/app.e5387136fb264b9ffd3c.js
-./static/js/manifest.8d40daa4dfec15eb7199.js
-./static/css/app.ce430e209759b17f512832d857e900bc.css
+./static/js/0.a13b92312fee5b701ff9.js
+./static/js/vendor.8d9015e8e60b5bb1a474.js
+./static/js/app.1211347fb6690b5a06f0.js
+./static/js/manifest.8c9c75278a6e21c44cad.js
+./static/css/app.e4087b0d5e6736ea5db0f69f4e5d576e.css
+./icon_256x256.png
+./manifest.json
 ./icon.png
 ./
 
