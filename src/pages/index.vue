@@ -24,7 +24,12 @@ export default {
     async getMore (done) {
       try {
         let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2/before/' + this.xcTimestamp)
-        this.xcList = this.xcList.concat(res.data.stories)
+        let stories = res.data.stories
+        let visited = JSON.parse(localStorage.visited || "[]")
+        stories.forEach((story) => {
+          story.visited = visited.indexOf(story.id) !== -1
+        })
+        this.xcList = this.xcList.concat(stories)
         this.xcTimestamp = res.data.timestamp
         done('success')
       } catch (err) {
@@ -38,6 +43,13 @@ export default {
     getDetail (item) {
       this.curId = item.id
       this.showDetail = true
+      item.visited = true
+      let visited = JSON.parse(localStorage.visited || "[]")
+      if (!~visited.indexOf(item.id)) {
+        visited.push(item.id)
+        localStorage.visited = JSON.stringify(visited)
+      }
+      item.visited = true
       this.$router.push({ path: '/' + item.id })
     }
   },
@@ -45,7 +57,12 @@ export default {
     let loading = this.$loading({ target: '.list-com', body: true, lock: true })
     try {
       let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2')
-      this.xcList = res.data.stories
+      let stories = res.data.stories
+      let visited = JSON.parse(localStorage.visited || "[]")
+      stories.forEach((story) => {
+        story.visited = visited.indexOf(story.id) !== -1
+      })
+      this.xcList = stories
       this.xcTimestamp = res.data.timestamp
       loading.close()
     } catch(err) {

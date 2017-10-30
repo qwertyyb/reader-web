@@ -1,5 +1,5 @@
 <template>
-  <div class="list-item" @click="$emit('click')">
+  <div :class="['list-item', item.visited ? 'visited' : '']" @click="$emit('click')">
       <img :src="item.images[0]" :alt="item.title" class="picture">
       <div class="title-block">
           <h3 class="main-title">{{ item.display_date }}</h3>
@@ -50,13 +50,19 @@ export default {
     margin: 0;
     margin-top: 5px;
     margin-left: 5px;
-    color: #bfbfbf;
+    color: #999;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
     letter-spacing: 2px;
     font-size: 14px;
+}
+.list-item.visited .main-title {
+    color: #999;
+}
+.list-item.visited .sub-title {
+    color: #bbb;
 }
 </style>
 
