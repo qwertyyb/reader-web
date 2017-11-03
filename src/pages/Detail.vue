@@ -30,7 +30,7 @@ export default {
   },
 	methods: {
     async getStory(id) {
-      let loading = this.$loading({ target: '.detail-container', body: true, lock: true })
+      let loading = this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中' })
       try {
         let result = await axios.get('https://bird.ioliu.cn/v1?url=http://news-at.zhihu.com/api/4/news/' + id)
         let data = result.data
@@ -65,7 +65,7 @@ export default {
 
 <style>
 .detail-container {
-  margin-top: 1px;
+  margin-top: -5px;
 }
 /*  */
 article,

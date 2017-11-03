@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <ListItem v-for="(item, index) in list" :key="item.id" :item="item" @click="$emit('click', item, index)"></ListItem>
-    <p v-if="getMore" class="more" @click="changeLoadingStatus('loading')">{{ loadingStatus }}</p>
+    <p v-if="getMore && list.length > 0" class="more" @click="changeLoadingStatus('loading')">{{ loadingStatus }}</p>
   </div>
 </template>
 

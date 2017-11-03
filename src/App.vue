@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <el-menu theme="dark" default-active="xc" mode="horizontal" class="menu">
+    <el-menu background-color="#545c64" text-color="#fff" active-text-color="#fff" default-active="xc" mode="horizontal" class="menu">
       <el-menu-item index="xc" class="menu-title">瞎扯</el-menu-item>
     </el-menu>
     <div class="main-content">
@@ -24,9 +24,11 @@ export default {
   watch: {
     '$route' (to, from) {
       if (to.name === 'detail' && from.name === 'index') {
+        // 在路由之前，存储当前页面的信息，以便恢复到当前位置
         localStorage.scroll = document.body.scrollTop
         localStorage.docHeight = document.body.offsetHeight
       } else if (to.name === 'index' && from.name === 'detail' && localStorage.scroll && localStorage) {
+        // 滚动到之前存储的位置
         let scrolled = false
         let docHeight = Number(localStorage.docHeight)
         let times = 0
@@ -68,13 +70,14 @@ body {
   transition: 0.6s;
 }
 .layout .main-content {
-  padding-top: 60px;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 600px;
+  min-height: 450px;
+  margin: 68px auto 0 auto;
 }
 .layout .menu {
   box-shadow: 0 3px 6px #aaa;
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 10;
 }

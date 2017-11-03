@@ -4,13 +4,14 @@
 import Vue from 'vue'
 import router from './router'
 import Views from './App'
-import {Menu, MenuItem, Loading, Notification} from 'element-ui'
+import {Menu, MenuItem, Loading, Notification, Icon} from 'element-ui'
 require('offline-plugin/runtime').install()
 
 Vue.config.productionTip = false
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Loading)
+Vue.use(Icon)
 
 Vue.prototype.$notify = Notification
 Vue.prototype.$loading = Loading.service
