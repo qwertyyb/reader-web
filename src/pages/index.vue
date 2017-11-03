@@ -70,7 +70,7 @@ export default {
       this.$router.push({ path: '/' + item.id })
     }
   },
-  created () {
+  mounted () {
     this.getStoryList()
   }
 }

@@ -71,7 +71,7 @@ body {
 }
 .layout .main-content {
   max-width: 600px;
-  min-height: 450px;
+  min-height: 500px;
   margin: 68px auto 0 auto;
 }
 .layout .menu {
