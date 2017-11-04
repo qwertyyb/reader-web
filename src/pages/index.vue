@@ -1,5 +1,5 @@
 <template>
-  <Error v-if="error" :action="refresh"></Error>
+  <!-- <Error v-if="error" :action="refresh"></Error> -->
   <List v-else :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
 </template>
 
@@ -67,8 +67,25 @@ export default {
         visited.push(item.id)
         localStorage.visited = JSON.stringify(visited)
       }
+      sessionStorage.scroll = Number(window.scrollY)
+      sessionStorage.height = Number(document.body.offsetHeight)
       this.$router.push({ path: '/' + item.id })
     }
+  },
+  activated () {
+    // 滚动到之前存储的位置
+    let height = Number(sessionStorage.height || 0), scrollTop = Number(sessionStorage.scroll || 0)
+    let times = 0
+    let interval = setInterval(() => {
+      if (window.scrollY === scrollTop || times > 10) {
+        clearInterval(interval)
+        return
+      }
+      times++
+      if (document.body.offsetHeight === height) {
+        window.scrollTo(0, scrollTop)
+      }
+    }, 500)
   },
   mounted () {
     this.getStoryList()
