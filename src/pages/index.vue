@@ -29,7 +29,7 @@ export default {
     async getStoryList(){
       return new Promise(async (resolve, reject) => {
         this.error = false
-        let loading = this.xcList.length > 0 ? {} : this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中' })
+        let loading = this.xcList.length > 0 ? {} : this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
         try {
           let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2/before/' + this.xcTimestamp)
           let stories = res.data.stories
@@ -94,4 +94,7 @@ export default {
 </script>
 
 <style>
+.loading {
+  max-height: calc(100vh - 60px);
+}
 </style>
