@@ -21,7 +21,7 @@ export default {
 <style>
 .error {
 	display: flex;
-	margin-top: 220px;
+	margin-top: calc(50vh - 100px);
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;

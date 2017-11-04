@@ -1,16 +1,22 @@
 <template>
-  <main class="detail-container" id="detail" v-html="content">
+  <Error v-if="error" :action="refresh"></Error>
+  <main v-else class="detail-container" id="detail" v-html="content">
   </main>
 </template>
 
 <script>
 import axios from 'axios'
+import Error from '@/components/Error'
 
 export default {
 	name: 'story_detail',
+  components: {
+    Error
+  },
 	data(){
 		return {
-      content: ''
+      content: '',
+      error: false
 		}
 	},
   props: {
@@ -29,8 +35,12 @@ export default {
     }
   },
 	methods: {
+    refresh () {
+      this.getStory(this.id)
+    },
     async getStory(id) {
-      let loading = this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中' })
+      this.error = false
+      let loading = this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
       try {
         let result = await axios.get('https://bird.ioliu.cn/v1?url=http://news-at.zhihu.com/api/4/news/' + id)
         let data = result.data
@@ -47,10 +57,7 @@ export default {
         loading.close()
       } catch (err) {
         loading.close()
-        this.$notify.error({
-          title: '错误',
-          message: '遇到错误'
-        })
+        this.error = true
       }
     }
   },
@@ -66,6 +73,9 @@ export default {
 <style>
 .detail-container {
   margin-top: -5px;
+}
+.loading {
+  max-height: calc(100vh - 60px);
 }
 /*  */
 article,
@@ -505,10 +515,12 @@ ol {
 }
 
 .headline .img-place-holder {
+  height: 82vw;
   max-height: 375px;
   overflow: hidden;
   text-align: center;
   position: relative;
+  background: #bbb;
 }
 
 .img-place-holder img {

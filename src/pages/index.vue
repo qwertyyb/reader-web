@@ -1,5 +1,5 @@
 <template>
-  <!-- <Error v-if="error" :action="refresh"></Error> -->
+  <Error v-if="error" :action="refresh"></Error>
   <List v-else :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
 </template>
 

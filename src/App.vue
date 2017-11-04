@@ -50,7 +50,7 @@ body {
 }
 .layout .main-content {
   max-width: 600px;
-  min-height: 500px;
+  min-height: calc(100vh-60px);
   margin: 0 auto;
 }
 .layout .menu {
