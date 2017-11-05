@@ -95,6 +95,6 @@ export default {
 
 <style>
 .loading {
-  max-height: calc(100vh - 60px);
+  height: 60vh;
 }
 </style>
