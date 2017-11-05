@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#ver:2017-11-5 21:28:58
+#ver:2017-11-5 22:39:51
 #plugin:4.8.4
 
 CACHE:
@@ -7,7 +7,7 @@ CACHE:
 ./static/js/vendor.7d3fb84a740b624ec90c.js
 ./static/js/app.c14e275ab14cfef73027.js
 ./static/js/manifest.ab762b84529b6fc532a0.js
-./static/css/app.11b79ad41945a02e8a9176fe8fc519a3.css
+./static/css/app.1737765aaa7e70bae60f085b7bb66e41.css
 ./icon_256x256.png
 ./manifest.json
 ./icon.png

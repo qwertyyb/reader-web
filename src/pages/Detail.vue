@@ -75,7 +75,7 @@ export default {
   margin-top: -5px;
 }
 .loading {
-  max-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
 }
 /*  */
 article,
