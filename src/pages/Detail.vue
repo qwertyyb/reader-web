@@ -7,6 +7,7 @@
 <script>
 import axios from 'axios'
 import Error from '@/components/Error'
+import MtaH5 from 'mta-h5-analysis'
 
 export default {
 	name: 'story_detail',
@@ -30,6 +31,7 @@ export default {
       if (Number(newId) < 0) {
         return
       }
+      MtaH5.pgv()
       this.getStory(newId)
       window.scrollTo(0, 0)
     }
@@ -62,6 +64,14 @@ export default {
     }
   },
   created () {
+    // 初始化
+    MtaH5.init({
+      "sid":'500575360', //必填，统计用的appid
+      "autoReport": 1,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
+      "senseHash": 1, //hash锚点是否进入url统计
+      // "senseQuery": 1, //url参数是否进入url统计
+      // "performanceMonitor": 1 //是否开启性能监控
+    })
     this.getStory(this.id)
   },
   mounted () {
