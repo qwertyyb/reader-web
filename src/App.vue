@@ -1,9 +1,5 @@
 <template>
   <div class="layout">
-    <el-menu background-color="#545c64" text-color="#fff" active-text-color="#fff" default-active="xc" mode="horizontal" class="menu">
-      <el-menu-item index="xc" class="menu-title">瞎扯</el-menu-item>
-    </el-menu>
-    <div class="block"></div>
     <div class="main-content">
       <transition :name="$route.name === 'detail' ? 'slide-left' : 'slide-right'">
         <keep-alive>
@@ -45,22 +41,12 @@ body {
   transform: translate(-800px, 0);
   transition: 0.4s;
 }
-.layout .block {
-  height: 68px;
-}
 .layout .main-content {
   max-width: 600px;
   min-height: calc(100vh-60px);
-  margin: 0 auto;
+  margin: 0 15px;
 }
-.layout .menu {
-  box-shadow: 0 3px 6px #aaa;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-}
-.layout .menu-title {
-  font-size: 24px;
+.el-tabs__header {
+  margin: 0;
 }
 </style>

@@ -1174,7 +1174,6 @@ body.dudu-night,
   background-image: url(http://static.daily.zhihu.com/img/Dark_News_Column_Entrance_Highlight.png);
 }
 
-//绂佺敤澶撮儴涓嬮潰鐨勫垎闅旂嚎
 .dudu .headline {
   border-bottom: none;
 }

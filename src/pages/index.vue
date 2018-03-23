@@ -1,6 +1,15 @@
 <template>
-  <Error v-if="error" :action="refresh"></Error>
-  <List v-else :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
+  <div>
+    <Error v-if="error" :action="refresh"></Error>
+    <el-tabs v-model="activatedTab" @tab-click="tabClicked">
+      <el-tab-pane label="瞎扯" name="xc">
+        <List :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
+      </el-tab-pane>
+      <el-tab-pane label="大误" name="dw">
+        <List :list="dwList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>        
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 
 <script>
@@ -8,7 +17,12 @@ import List from '@/components/List'
 import Error from '@/components/Error'
 import axios from 'axios'
 import MtaH5 from 'mta-h5-analysis'
+import {getList} from '@/utils/api'
 
+const section = {
+  XC: 2,
+  DW: 29
+}
 export default {
   components: {
     List,
@@ -18,32 +32,47 @@ export default {
     return {
       xcList: [],
       xcTimestamp: 0,
-      error: false
+      error: false,
+      activatedTab: 'xc',
+      dwList: [],
+      dwTimestamp: 0
     }
   },
-  watch: {
+  computed: {
+    sectionType () {
+      return section[this.activatedTab.toUpperCase()]
+    }
   },
   methods: {
+    tabClicked(tab) {
+      if(this[tab.name + 'List'].length) {
+        return
+      }
+      this.getStoryList(this.sectionType)
+    },
     refresh () {
       this.getStoryList()
     },
-    async getStoryList(){
+    async getStoryList(sectionType){
+      sectionType = sectionType || section.XC
+      let list = this[this.activatedTab + 'List']
       return new Promise(async (resolve, reject) => {
         this.error = false
-        let loading = this.xcList.length > 0 ? {} : this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
+        let loading = list.length > 0 ? {} : this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
         try {
-          let res = await axios.get('https://bird.ioliu.cn/v1/?url=http://news-at.zhihu.com/api/3/section/2/before/' + this.xcTimestamp)
-          let stories = res.data.stories
+          let res = await getList(this[this.activatedTab + 'Timestamp'], sectionType)
+          let stories = res.stories
           let visited = JSON.parse(localStorage.visited || "[]")
           stories.forEach((story) => {
             story.visited = visited.indexOf(story.id) !== -1
           })
-          this.xcList = this.xcList.concat(stories)
-          this.xcTimestamp = res.data.timestamp
+          list = list.concat(stories)
+          this[this.activatedTab + 'List'] = list
+          this[this.activatedTab + 'Timestamp'] = res.timestamp
           loading.close && loading.close()
           resolve(true)
         } catch(err) {
-          this.error = this.xcList.length <= 0
+          this.error = list.length <= 0
           loading.close && loading.close()
           reject(err)
         }
@@ -51,7 +80,7 @@ export default {
     },
     async getMore (done) {
       try {
-        await this.getStoryList()
+        await this.getStoryList(this.sectionType)
         done && done('success')
       } catch (err) {
         this.$notify.error({
