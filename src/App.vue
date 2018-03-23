@@ -44,7 +44,7 @@ body {
 .layout .main-content {
   max-width: 600px;
   min-height: calc(100vh-60px);
-  margin: 0 15px;
+  margin: 0 auto;
 }
 .el-tabs__header {
   margin: 0;

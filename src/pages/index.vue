@@ -1,7 +1,7 @@
 <template>
   <div>
     <Error v-if="error" :action="refresh"></Error>
-    <el-tabs v-model="activatedTab" @tab-click="tabClicked">
+    <el-tabs class="tab-header" v-model="activatedTab" @tab-click="tabClicked">
       <el-tab-pane label="瞎扯" name="xc">
         <List :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
       </el-tab-pane>
@@ -137,5 +137,8 @@ export default {
 <style>
 .loading {
   height: 60vh;
+}
+.tab-header {
+  margin: 0 15px;
 }
 </style>

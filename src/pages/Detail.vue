@@ -1,13 +1,19 @@
 <template>
-  <Error v-if="error" :action="refresh"></Error>
-  <main v-else class="detail-container" id="detail" v-html="content">
-  </main>
+  <div>
+    <Error v-if="error" :action="refresh"></Error>
+    <template v-else>
+      <h1 class="title">{{title}}</h1>
+      <main class="detail-container" id="detail" v-html="content">
+      </main>
+    </template>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Error from '@/components/Error'
 import MtaH5 from 'mta-h5-analysis'
+import {getDetail} from '@/utils/api'
 
 export default {
 	name: 'story_detail',
@@ -17,7 +23,8 @@ export default {
 	data(){
 		return {
       content: '',
-      error: false
+      error: false,
+      title: ''
 		}
 	},
   props: {
@@ -44,8 +51,8 @@ export default {
       this.error = false
       let loading = this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
       try {
-        let result = await axios.get('https://bird.ioliu.cn/v1?url=http://news-at.zhihu.com/api/4/news/' + id)
-        let data = result.data
+        let data = await getDetail(id)
+        this.title = data.title
         // 插入最上面的大图
         var findstr = '<div class="img-place-holder"></div>'
         var replacestr = '<div class="img-place-holder">\
@@ -82,10 +89,23 @@ export default {
 
 <style>
 .detail-container {
-  margin-top: -5px;
+  margin-top: 60px;
 }
 .loading {
   height: calc(100vh - 60px);
+}
+.title {
+  margin: 0;
+  padding: 15px;
+  color: #fff;
+  font-size: 28px;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.3);
+  background: #409EFF;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
 }
 /*  */
 article,
