@@ -2,7 +2,9 @@
   <div>
     <Error v-if="error" :action="refresh"></Error>
     <template v-else>
-      <h1 class="title">{{title}}</h1>
+      <div class="title">
+        <i class="el-icon-back" @click="routeBack"></i>  <h1>{{title}}</h1>
+      </div>
       <main class="detail-container" id="detail" v-html="content">
       </main>
     </template>
@@ -68,6 +70,9 @@ export default {
         loading.close()
         this.error = true
       }
+    },
+    routeBack() {
+      this.$router.back()
     }
   },
   created () {
@@ -89,23 +94,29 @@ export default {
 
 <style>
 .detail-container {
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .loading {
-  height: calc(100vh - 60px);
+  height: calc(100vh - 40px);
 }
 .title {
   margin: 0;
-  padding: 15px;
-  color: #fff;
-  font-size: 28px;
+  padding: 7px 15px;
+  font-size: 24px;
+  font-weight: normal;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.3);
-  background: #409EFF;
+  background: #fff;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
   width: 100%;
+  display: flex;
+  align-items: center;
+}
+.title h1{
+  margin-left: 10px;
+  font-weight: normal;
 }
 /*  */
 article,
