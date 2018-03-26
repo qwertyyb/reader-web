@@ -139,6 +139,22 @@ export default {
   height: 60vh;
 }
 .tab-header {
-  margin: 0 15px;
+}
+.tab-header .el-tabs__header {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 0 15px;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  background: #fff;
+}
+.tab-header .el-tabs__content {
+  margin-top: 40px;
+}
+.tab-header .el-tabs__item {
+  font-size: 22px;
 }
 </style>
