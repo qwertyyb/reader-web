@@ -3,7 +3,8 @@
     <Error v-if="error" :action="refresh"></Error>
     <template v-else>
       <div class="title">
-        <i class="el-icon-back" @click="routeBack"></i>  <h1>{{title}}</h1>
+        <i class="icon-back el-icon-back" @click="routeBack"></i>  <h1>{{title}}</h1>
+        <i @click="sharePage" class="icon-share el-icon-share"></i>
       </div>
       <main class="detail-container" id="detail" v-html="content">
       </main>
@@ -73,6 +74,17 @@ export default {
     },
     routeBack() {
       this.$router.back()
+    },
+    sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: this.title,
+          text: '来自知乎日报',
+          url: location.href
+        })
+      } else {
+        alert('不能分享')
+      }
     }
   },
   created () {
@@ -88,6 +100,7 @@ export default {
   },
   mounted () {
     window.scrollTo(0, 0)
+    // alert(navigator.share)
   }
 }
 </script>
@@ -101,7 +114,7 @@ export default {
 }
 .title {
   margin: 0;
-  padding: 7px 15px;
+  padding: 7px 0;
   font-size: 24px;
   font-weight: normal;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.3);
@@ -117,6 +130,13 @@ export default {
 .title h1{
   margin-left: 10px;
   font-weight: normal;
+  flex: 1;
+}
+.title .icon-back {
+  margin-left: 15px;
+}
+.title .icon-share {
+  margin-right: 15px;
 }
 /*  */
 article,
