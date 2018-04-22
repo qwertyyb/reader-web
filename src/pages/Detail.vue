@@ -17,6 +17,7 @@ import axios from 'axios'
 import Error from '@/components/Error'
 import MtaH5 from 'mta-h5-analysis'
 import {getDetail} from '@/utils/api'
+import Share from '@/utils/share'
 
 export default {
 	name: 'story_detail',
@@ -76,15 +77,12 @@ export default {
       this.$router.back()
     },
     sharePage() {
-      if (navigator.share) {
-        navigator.share({
-          title: this.title,
-          text: '来自知乎日报',
-          url: location.href
-        })
-      } else {
-        alert('不能分享')
-      }
+      let share = new Share({
+        title: this.title,
+        desc: '来自知乎日报',
+        link: location.href
+      })
+      share.call('qqFriend')
     }
   },
   created () {
@@ -289,7 +287,6 @@ blockquote {
   border-left: 3px solid #D0E5F2;
   font-style: normal;
   display: block;
-  vertical-align: baseline;
   font-size: 100%;
   margin: .5em 0;
   padding: 0 0 0 1em;
