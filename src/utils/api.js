@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const proxyRoot = 'https://proxy.qwertyyb.cn/news-at'
+const proxyRoot = 'https://proxy.qwertyyb.cn/news-at.zhihu.com'
 
 const get = (url) => axios.get(proxyRoot + url).then(res => res.data)
 
