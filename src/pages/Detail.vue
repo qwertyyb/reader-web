@@ -1,34 +1,26 @@
 <template>
-  <div>
-    <Error v-if="error" :action="refresh"></Error>
-    <template v-else>
-      <div class="title">
-        <i class="icon-back el-icon-back" @click="routeBack"></i>  <h1>{{title}}</h1>
-        <i @click="sharePage" class="icon-share el-icon-share"></i>
-      </div>
-      <main class="detail-container" id="detail" v-html="content">
-      </main>
-    </template>
-  </div>
+  <view-box>
+    <x-header slot="header" :left-options="{backText: ''}">{{title}}</x-header>
+    <main class="detail-container" id="detail" v-html="content"/>
+  </view-box>
 </template>
 
 <script>
-import axios from 'axios'
-import Error from '@/components/Error'
+import { XHeader, ViewBox } from 'vux'
 import MtaH5 from 'mta-h5-analysis'
-import {getDetail} from '@/utils/api'
+import { getDetail } from '@/utils/api'
 import Share from '@/utils/share'
 
 export default {
 	name: 'story_detail',
   components: {
-    Error
+    XHeader,
+    ViewBox
   },
 	data(){
 		return {
       content: '',
-      error: false,
-      title: ''
+      title: '正在加载'
 		}
 	},
   props: {
@@ -42,20 +34,17 @@ export default {
       if (Number(newId) < 0) {
         return
       }
-      MtaH5.pgv()
       this.getStory(newId)
       window.scrollTo(0, 0)
     }
   },
 	methods: {
-    refresh () {
-      this.getStory(this.id)
-    },
     async getStory(id) {
-      this.error = false
-      let loading = this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
+      MtaH5.pgv()
+      const loading = this.$vux.loading
+      loading.show('拼命加载中')
       try {
-        let data = await getDetail(id)
+        const data = await getDetail(id)
         this.title = data.title
         // 插入最上面的大图
         var findstr = '<div class="img-place-holder"></div>'
@@ -64,17 +53,13 @@ export default {
         <h1 class="headline-title">'+ data.title +'</h1>\
         <span class="img-source">图片：'+ data.image_source +'</span>\
         </div>'
-        var body = data.body.replace(findstr, replacestr);
+        let body = data.body.replace(findstr, replacestr);
         body = body.replace(/src=\"http:/g, 'src="')
         this.content = body
-        loading.close()
+        loading.hide()
       } catch (err) {
-        loading.close()
-        this.error = true
+        loading.hide()
       }
-    },
-    routeBack() {
-      this.$router.back()
     },
     sharePage() {
       let share = new Share({
@@ -88,53 +73,22 @@ export default {
   created () {
     // 初始化
     MtaH5.init({
-      "sid":'500575360', //必填，统计用的appid
-      "autoReport": 1,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
-      "senseHash": 1, //hash锚点是否进入url统计
-      // "senseQuery": 1, //url参数是否进入url统计
-      // "performanceMonitor": 1 //是否开启性能监控
+      sid:'500575360', //必填，统计用的appid
+      cid: '500645799',
+      autoReport: 0,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
+      senseHash: 1, //hash锚点是否进入url统计
+      senseQuery: 1, //url参数是否进入url统计
+      performanceMonitor: 1 //是否开启性能监控
     })
     this.getStory(this.id)
-  },
-  mounted () {
-    window.scrollTo(0, 0)
-    // alert(navigator.share)
   }
 }
 </script>
 
 <style>
-.detail-container {
-  margin-top: 40px;
-}
 .loading {
-  height: calc(100vh - 40px);
-}
-.title {
-  margin: 0;
-  padding: 7px 0;
-  font-size: 24px;
-  font-weight: normal;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,.3);
-  background: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-.title h1{
-  margin-left: 10px;
-  font-weight: normal;
-  flex: 1;
-}
-.title .icon-back {
-  margin-left: 15px;
-}
-.title .icon-share {
-  margin-right: 15px;
+  margin-top: 46px;
+  height: calc(100vh - 46px);
 }
 /*  */
 article,

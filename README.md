@@ -12,11 +12,11 @@ __Disclaimer - 声明__
 ## Dependency - 依赖
 - axios^0.17.0,
 - babel-preset-es2015^6.24.1,
-- element-ui^1.4.7,
-- stylus^0.54.5,
-- stylus-loader^3.0.1,
+- vux^2.9.2,
 - vue^2.2.2,
 - vue-router^2.2.0
+- nativeShare^2.1.3
+- vue-scroller^2.2.4
 
 ## Build Setup
 

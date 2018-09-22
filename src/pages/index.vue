@@ -1,160 +1,142 @@
 <template>
-  <div>
-    <Error v-if="error" :action="refresh"></Error>
-    <el-tabs class="tab-header" v-model="activatedTab" @tab-click="tabClicked">
-      <el-tab-pane label="瞎扯" name="xc">
-        <List :list="xcList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>
-      </el-tab-pane>
-      <el-tab-pane label="大误" name="dw">
-        <List :list="dwList" :get-more="getMore" @click="routeToDetail" class="list-com"></List>        
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+  <view-box body-padding-top="46px" body-padding-bottom="0">
+    <x-header slot="header" :left-options="{showBack: false}"
+      style="width:100%;position:absolute;left:0;top:0;z-index:100;" 
+    >知乎日报</x-header>
+    <tab v-model="activedTab ">
+      <tab-item>瞎扯</tab-item>
+      <tab-item>大误</tab-item>
+    </tab>
+    <swiper v-model="activedTab" ref="swiper" height="100%" :show-dots="false" :threshold="150" style="height: 100%">
+      <swiper-item>
+        <scroller ref="scroller-0" :on-refresh="$event=>onRefresh(0, $event)" :on-infinite="$event=>onInfinite(0, $event)" height="100%">
+          <panel :list="list[0]" type="1" @on-click-item="onItemClick"></panel>
+        </scroller>
+      </swiper-item>
+      <swiper-item>
+        <scroller ref="scroller-1" :on-refresh="$event=>onRefresh(1, $event)" :on-infinite="$event=>onInfinite(1, $event)" height="100%">
+          <panel :list="list[1]" type="1" @on-click-item="onItemClick"></panel>
+        </scroller>
+      </swiper-item>
+    </swiper>
+  </view-box>
 </template>
-
 <script>
-import List from '@/components/List'
-import Error from '@/components/Error'
-import axios from 'axios'
+import { ViewBox, XHeader, Tab, TabItem, Swiper, SwiperItem, Panel } from 'vux'
+import { getList } from '../utils/api'
 import MtaH5 from 'mta-h5-analysis'
-import {getList} from '@/utils/api'
 
-const section = {
-  XC: 2,
-  DW: 29
-}
+const contentTypes =  [2, 29]
+
 export default {
+  name: 'IndexPage',
   components: {
-    List,
-    Error
+    ViewBox,
+    XHeader,
+    Tab,
+    TabItem,
+    Swiper,
+    SwiperItem,
+    Panel
   },
-  data () {
+  data() {
     return {
-      xcList: [],
-      xcTimestamp: 0,
-      error: false,
-      activatedTab: 'xc',
-      dwList: [],
-      dwTimestamp: 0
+      timestamp: {
+        0: 0,
+        1: 0
+      },
+      list: {
+        0: [],
+        1: []
+      }
     }
   },
   computed: {
-    sectionType () {
-      return section[this.activatedTab.toUpperCase()]
-    }
-  },
-  methods: {
-    tabClicked(tab) {
-      if(this[tab.name + 'List'].length) {
-        return
-      }
-      this.getStoryList(this.sectionType)
-    },
-    refresh () {
-      this.getStoryList()
-    },
-    async getStoryList(sectionType){
-      sectionType = sectionType || section.XC
-      let list = this[this.activatedTab + 'List']
-      return new Promise(async (resolve, reject) => {
-        this.error = false
-        let loading = list.length > 0 ? {} : this.$loading({ target: '.main-content', body: false, fullscreen: false, lock: true, text: '拼命加载中', customClass: 'loading' })
-        try {
-          let res = await getList(this[this.activatedTab + 'Timestamp'], sectionType)
-          let stories = res.stories
-          let visited = JSON.parse(localStorage.visited || "[]")
-          stories.forEach((story) => {
-            story.visited = visited.indexOf(story.id) !== -1
-          })
-          list = list.concat(stories)
-          this[this.activatedTab + 'List'] = list
-          this[this.activatedTab + 'Timestamp'] = res.timestamp
-          loading.close && loading.close()
-          resolve(true)
-        } catch(err) {
-          this.error = list.length <= 0
-          loading.close && loading.close()
-          reject(err)
+    activedTab: {
+      get() {
+        return +(this.$route.query.tabIndex || 0)
+      },
+      set(val) {
+        if (this.$route.name !== 'index') {
+          return
         }
-      })
-    },
-    async getMore (done) {
-      try {
-        await this.getStoryList(this.sectionType)
-        done && done('success')
-      } catch (err) {
-        this.$notify.error({
-          title: '错误',
-          message: '获取信息错误'
-        })
-        done && done('fail')
+        this.$router.push({ path: '/', query: { tabIndex: val } })
       }
-    },
-    routeToDetail (item) {
-      item.visited = true
-      let visited = JSON.parse(localStorage.visited || "[]")
-      if (!~visited.indexOf(item.id)) {
-        visited.push(item.id)
-        localStorage.visited = JSON.stringify(visited)
-      }
-      sessionStorage.scroll = Number(window.scrollY)
-      sessionStorage.height = Number(document.body.offsetHeight)
-      this.$router.push({ path: '/' + item.id })
     }
   },
-  activated () {
-    // 滚动到之前存储的位置
-    let height = Number(sessionStorage.height || 0), scrollTop = Number(sessionStorage.scroll || 0)
-    let times = 0
-    let interval = setInterval(() => {
-      if (window.scrollY === scrollTop || times > 10) {
-        clearInterval(interval)
+  watch: {
+    activedTab(val, old) {
+      if (this.list[val].length) {
         return
       }
-      times++
-      if (document.body.offsetHeight === height) {
-        window.scrollTo(0, scrollTop)
-      }
-    }, 500)
+      this.getList()
+    }
   },
-  created () {
+  created() {
     // 初始化
     MtaH5.init({
-      "sid":'500575360', //必填，统计用的appid
-      "autoReport": 0,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
-      "senseHash": 1, //hash锚点是否进入url统计
-      "senseQuery": 1, //url参数是否进入url统计
-      // "performanceMonitor": 1 //是否开启性能监控
+      sid:'500575360', //必填，统计用的appid
+      cid: '500645799',
+      autoReport: 0,//是否开启自动上报(1:init完成则上报一次,0:使用pgv方法才上报)
+      senseHash: 1, //hash锚点是否进入url统计
+      senseQuery: 1, //url参数是否进入url统计
+      performanceMonitor: 1 //是否开启性能监控
     })
     MtaH5.pgv()
   },
-  mounted () {
-    this.getStoryList()
+  activated() {
+    this.$refs.swiper.render(this.activedTab)  // 修复从第二个选项卡页面进入详情页再退回不渲染第二个选项卡的问题
+    setTimeout(() => {  // 从详情页退回时，滚动至进入位置
+      const top = sessionStorage.getItem(`scroller-${this.activedTab}-top`)
+      if (top) {
+        this.$refs[`scroller-${this.activedTab}`].scrollTo( 0, top)
+      }
+    })
+  },
+  methods: {
+    async getList(insertAfter = false) {
+      const contentType = contentTypes[this.activedTab]
+      const curTimestamp = this.timestamp[this.activedTab]
+      const { timestamp, stories } = await getList(curTimestamp, contentType)
+      this.timestamp[this.activedTab] = timestamp
+      const list = stories.map(({ images: [src], title, display_date: desc, id}) => ({
+        title,
+        desc,
+        src,
+        url: `/detail/${id}`
+      }));
+      if (insertAfter) {
+        this.$set(this.list, this.activedTab, this.list[this.activedTab].concat(list))
+      } else {
+        this.$set(this.list, this.activedTab, list)
+      }
+    },
+    async onRefresh(tab, done) {
+      if (this.activedTab !== tab) {
+        return
+      }
+      this.timestamp[this.activedTab] = 0
+      await this.getList()
+      done()
+    },
+    async onInfinite(tab, done) {
+      if (this.activedTab !== tab) {
+        return
+      }
+      await this.getList(true)
+      done()
+    },
+    onItemClick(item) {
+      // 保存进入详情页面时的scrollTop, 重新激活此页面时，恢复滚动位置
+      const { top } = this.$refs[`scroller-${this.activedTab}`].getPosition()
+      console.log(`scroller-${this.activedTab}`, top)
+      sessionStorage.setItem(`scroller-${this.activedTab}-top`, top)
+    }
   }
 }
 </script>
-
 <style>
-.loading {
-  height: 60vh;
-}
-.tab-header {
-}
-.tab-header .el-tabs__header {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  padding: 0 15px;
-  height: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  background: #fff;
-}
-.tab-header .el-tabs__content {
-  margin-top: 40px;
-}
-.tab-header .el-tabs__item {
-  font-size: 22px;
+.weui-media-box__title {
+  margin-bottom: 8px;
 }
 </style>
