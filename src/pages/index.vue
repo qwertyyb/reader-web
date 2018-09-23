@@ -121,7 +121,7 @@ export default {
     },
     async onInfinite(tab, done) {
       if (this.activedTab !== tab) {
-        return
+        return done()
       }
       await this.getList(true)
       done()
