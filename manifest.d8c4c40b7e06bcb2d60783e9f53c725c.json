@@ -1,0 +1,16 @@
+{
+  "icons": [
+    {
+      "src": "/icon_256x256.b8496eea0fd5aeab48a9c93b0f7fec84.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ],
+  "name": "瞎扯 如何正确的吐糟",
+  "short_name": "瞎扯",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "来处知乎日报的瞎扯栏目，让我们来一起学习如何正确的吐糟",
+  "background_color": "#fff"
+}
