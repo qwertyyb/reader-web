@@ -3,7 +3,7 @@
     <x-header slot="header" :left-options="{showBack: false}"
       style="width:100%;position:absolute;left:0;top:0;z-index:100;" 
     >知乎日报</x-header>
-    <tab v-model="activedTab ">
+    <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item>瞎扯</tab-item>
       <tab-item>大误</tab-item>
     </tab>
@@ -48,20 +48,8 @@ export default {
       list: {
         0: [],
         1: []
-      }
-    }
-  },
-  computed: {
-    activedTab: {
-      get() {
-        return +(this.$route.query.tabIndex || 0)
       },
-      set(val) {
-        if (this.$route.name !== 'index') {
-          return
-        }
-        this.$router.push({ path: '/', query: { tabIndex: val } })
-      }
+      activedTab: +this.$route.query.tabIndex || 0
     }
   },
   watch: {
@@ -85,7 +73,6 @@ export default {
     MtaH5.pgv()
   },
   activated() {
-    this.$refs.swiper.render(this.activedTab)  // 修复从第二个选项卡页面进入详情页再退回不渲染第二个选项卡的问题
     setTimeout(() => {  // 从详情页退回时，滚动至进入位置
       const top = sessionStorage.getItem(`scroller-${this.activedTab}-top`)
       if (top) {
@@ -131,6 +118,9 @@ export default {
       const { top } = this.$refs[`scroller-${this.activedTab}`].getPosition()
       console.log(`scroller-${this.activedTab}`, top)
       sessionStorage.setItem(`scroller-${this.activedTab}-top`, top)
+    },
+    onSwiperIndexChange(index) {
+      this.$router.push({ path: '/', query: { tabIndex: index } })
     }
   }
 }
