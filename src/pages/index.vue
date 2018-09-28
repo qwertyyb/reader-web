@@ -4,20 +4,21 @@
       style="width:100%;position:absolute;left:0;top:0;z-index:100;" 
     >知乎日报</x-header>
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
-      <tab-item>瞎扯</tab-item>
-      <tab-item>大误</tab-item>
+      <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
     </tab>
     <swiper v-model="activedTab" ref="swiper" height="100%" :show-dots="false" :threshold="150" style="height: 100%">
-      <swiper-item>
-        <scroller ref="scroller-0" :on-refresh="$event=>onRefresh(0, $event)" :on-infinite="$event=>onInfinite(0, $event)" height="100%">
-          <panel :list="list[0]" type="1" @on-click-item="onItemClick"></panel>
+      <swiper-item v-for="(contentType, index) in contentTypes" :key="contentType.name">
+        <scroller :ref="'scroller-'+index"
+          :on-refresh="$event=>onRefresh(index, $event)"
+          :on-infinite="$event=>onInfinite(index, $event)" height="100%">
+          <panel :list="list[index]" type="1" @on-click-item="onItemClick"></panel>
         </scroller>
       </swiper-item>
-      <swiper-item>
+      <!-- <swiper-item>
         <scroller ref="scroller-1" :on-refresh="$event=>onRefresh(1, $event)" :on-infinite="$event=>onInfinite(1, $event)" height="100%">
           <panel :list="list[1]" type="1" @on-click-item="onItemClick"></panel>
         </scroller>
-      </swiper-item>
+      </swiper-item> -->
     </swiper>
   </view-box>
 </template>
@@ -26,7 +27,31 @@ import { ViewBox, XHeader, Tab, TabItem, Swiper, SwiperItem, Panel } from 'vux'
 import { getList } from '../utils/api'
 import MtaH5 from 'mta-h5-analysis'
 
-const contentTypes =  [2, 29]
+const contentTypes =  [
+  {
+    name: '瞎扯',
+    id: 2,
+  }, {
+    name: '大误',
+    id: 29,
+  }, {
+    name: '放映机',
+    id: 28,
+  }, {
+    name: '小事',
+    id: 35,
+  }, {
+    name: '每周一吸',
+    id: 78,
+  }, {
+    name: '节日特辑',
+    id: 79
+  }, {
+    name: '本周热门精选',
+    id: 90,
+  }
+]
+
 
 export default {
   name: 'IndexPage',
@@ -41,14 +66,10 @@ export default {
   },
   data() {
     return {
-      timestamp: {
-        0: 0,
-        1: 0
-      },
-      list: {
-        0: [],
-        1: []
-      },
+      contentTypes,
+      tabItems: contentTypes.map(section => section.name),
+      timestamp: contentTypes.map(() => 0),
+      list: contentTypes.map(contentType => []),
       activedTab: +this.$route.query.tabIndex || 0
     }
   },
@@ -76,14 +97,17 @@ export default {
     setTimeout(() => {  // 从详情页退回时，滚动至进入位置
       const top = sessionStorage.getItem(`scroller-${this.activedTab}-top`)
       if (top) {
-        this.$refs[`scroller-${this.activedTab}`].scrollTo( 0, top)
+        this.$refs[`scroller-${this.activedTab}`][0].scrollTo(0, top)
       }
-    })
+    }, 50)
   },
   methods: {
     async getList(insertAfter = false) {
-      const contentType = contentTypes[this.activedTab]
+      const contentType = contentTypes[this.activedTab].id
       const curTimestamp = this.timestamp[this.activedTab]
+      if (curTimestamp === undefined) {
+        return
+      }
       const { timestamp, stories } = await getList(curTimestamp, contentType)
       this.timestamp[this.activedTab] = timestamp
       const list = stories.map(({ images: [src], title, display_date: desc, id}) => ({
@@ -115,8 +139,7 @@ export default {
     },
     onItemClick(item) {
       // 保存进入详情页面时的scrollTop, 重新激活此页面时，恢复滚动位置
-      const { top } = this.$refs[`scroller-${this.activedTab}`].getPosition()
-      console.log(`scroller-${this.activedTab}`, top)
+      const { top } = this.$refs[`scroller-${this.activedTab}`][0].getPosition()
       sessionStorage.setItem(`scroller-${this.activedTab}-top`, top)
     },
     onSwiperIndexChange(index) {
