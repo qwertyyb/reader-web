@@ -6,7 +6,7 @@
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
     </tab>
-    <swiper v-model="activedTab" ref="swiper" height="100%" :show-dots="false" :threshold="150" style="height: 100%">
+    <swiper v-model="activedTab" ref="swiper" height="100%" :show-dots="false" :threshold="125" style="height: calc(100% - 50px)">
       <swiper-item v-for="(contentType, index) in contentTypes" :key="contentType.name">
         <scroller :ref="'scroller-'+index"
           :on-refresh="$event=>onRefresh(index, $event)"
