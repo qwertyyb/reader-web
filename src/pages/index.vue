@@ -1,8 +1,13 @@
 <template>
   <view-box body-padding-top="46px" body-padding-bottom="0">
-    <x-header slot="header" :left-options="{showBack: false}"
-      style="width:100%;position:absolute;left:0;top:0;z-index:100;" 
-    >知乎日报</x-header>
+    <x-header slot="header"
+      style="width:100%;position:absolute;left:0;top:0;z-index:100;"
+      @click.native="toggleDrawerVisible"
+    >
+      <template slot="overwrite-left">
+        <x-icon type="menu" class="icon-menu"></x-icon>
+      </template>
+    知乎日报</x-header>
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
     </tab>
@@ -11,14 +16,9 @@
         <scroller :ref="'scroller-'+index"
           :on-refresh="$event=>onRefresh(index, $event)"
           :on-infinite="$event=>onInfinite(index, $event)" height="100%">
-          <panel :list="list[index]" type="1" @on-click-item="onItemClick"></panel>
+          <panel :list="curTabList" type="1" @on-click-item="onItemClick"></panel>
         </scroller>
       </swiper-item>
-      <!-- <swiper-item>
-        <scroller ref="scroller-1" :on-refresh="$event=>onRefresh(1, $event)" :on-infinite="$event=>onInfinite(1, $event)" height="100%">
-          <panel :list="list[1]" type="1" @on-click-item="onItemClick"></panel>
-        </scroller>
-      </swiper-item> -->
     </swiper>
   </view-box>
 </template>
@@ -35,20 +35,20 @@ const contentTypes =  [
     name: '大误',
     id: 29,
   }, {
-    name: '放映机',
-    id: 28,
-  }, {
     name: '小事',
     id: 35,
+  }, {
+    name: '放映机',
+    id: 28,
   }, {
     name: '每周一吸',
     id: 78,
   }, {
+    name: '本周热门',
+    id: 90,
+  }, {
     name: '节日特辑',
     id: 79
-  }, {
-    name: '本周热门精选',
-    id: 90,
   }
 ]
 
@@ -67,10 +67,20 @@ export default {
   data() {
     return {
       contentTypes,
-      tabItems: contentTypes.map(section => section.name),
       timestamp: contentTypes.map(() => 0),
       list: contentTypes.map(contentType => []),
       activedTab: +this.$route.query.tabIndex || 0
+    }
+  },
+  computed: {
+    tabItems() {
+      return contentTypes.map(section => section.name)
+    },
+    activedTabId() {
+      return contentTypes[this.activedTab].id
+    },
+    curTabList() {
+      return this.list[this.activedTab]
     }
   },
   watch: {
@@ -144,6 +154,9 @@ export default {
     },
     onSwiperIndexChange(index) {
       this.$router.push({ path: '/', query: { tabIndex: index } })
+    },
+    toggleDrawerVisible() {
+      this.$emit('toggleDrawerVisible')
     }
   }
 }
@@ -151,5 +164,10 @@ export default {
 <style>
 .weui-media-box__title {
   margin-bottom: 8px;
+}
+.icon-menu {
+  color: white;
+  width: 30px;
+  margin: -6px -10px;
 }
 </style>
