@@ -16,7 +16,7 @@
         <scroller :ref="'scroller-'+index"
           :on-refresh="$event=>onRefresh(index, $event)"
           :on-infinite="$event=>onInfinite(index, $event)" height="100%">
-          <panel :list="curTabList" type="1" @on-click-item="onItemClick"></panel>
+          <panel :list="list[index]" type="1" @on-click-item="onItemClick"></panel>
         </scroller>
       </swiper-item>
     </swiper>
@@ -75,12 +75,6 @@ export default {
   computed: {
     tabItems() {
       return contentTypes.map(section => section.name)
-    },
-    activedTabId() {
-      return contentTypes[this.activedTab].id
-    },
-    curTabList() {
-      return this.list[this.activedTab]
     }
   },
   watch: {
