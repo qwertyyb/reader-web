@@ -1,10 +1,10 @@
 CACHE MANIFEST
-#ver:2018-9-30 18:11:11
+#ver:2018-10-8 15:17:10
 #plugin:4.9.1
 
 CACHE:
 ./static/js/vendor.e5447f1cb644ee07067c.js
-./static/js/app.bacfa0aaca267dabed90.js
+./static/js/app.8a284a23abcc91d39a5e.js
 ./static/js/manifest.3ad1d5771e9b13dbdad2.js
 ./static/css/app.6c11a512773eb06b7505fb109a3ee029.css
 ./icon_256x256.png
