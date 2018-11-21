@@ -8,6 +8,7 @@
         <x-icon type="menu" class="icon-menu"></x-icon>
       </template>
     知乎日报</x-header>
+    <XButton type="primary" :disabled="!canSubscription">订阅</XButton>
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
     </tab>
@@ -23,7 +24,7 @@
   </view-box>
 </template>
 <script>
-import { ViewBox, XHeader, Tab, TabItem, Swiper, SwiperItem, Panel } from 'vux'
+import { ViewBox, XHeader, Tab, TabItem, Swiper, SwiperItem, Panel, XButton } from 'vux'
 import { getList } from '../utils/api'
 import MtaH5 from 'mta-h5-analysis'
 
@@ -62,14 +63,16 @@ export default {
     TabItem,
     Swiper,
     SwiperItem,
-    Panel
+    Panel,
+    XButton
   },
   data() {
     return {
       contentTypes,
       timestamp: contentTypes.map(() => 0),
       list: contentTypes.map(contentType => []),
-      activedTab: +this.$route.query.tabIndex || 0
+      activedTab: +this.$route.query.tabIndex || 0,
+      canSubscription: false,
     }
   },
   computed: {
