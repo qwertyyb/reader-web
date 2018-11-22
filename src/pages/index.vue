@@ -8,7 +8,6 @@
         <x-icon type="menu" class="icon-menu"></x-icon>
       </template>
     知乎日报</x-header>
-    <XButton type="primary" :disabled="!canSubscription">订阅</XButton>
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
     </tab>
@@ -71,8 +70,7 @@ export default {
       contentTypes,
       timestamp: contentTypes.map(() => 0),
       list: contentTypes.map(contentType => []),
-      activedTab: +this.$route.query.tabIndex || 0,
-      canSubscription: false,
+      activedTab: +this.$route.query.tabIndex || 0
     }
   },
   computed: {

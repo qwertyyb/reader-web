@@ -6,6 +6,7 @@ import VueScroller from 'vue-scroller'
 import  { LoadingPlugin } from 'vux'
 import router from './router'
 import Views from './App'
+import { updateSubscription } from './utils/api'
 
 require('offline-plugin/runtime').install()
 
@@ -37,18 +38,19 @@ const urlBase64ToUint8Array = base64String => {
 const subscriptionUser = (swRegistration) => {
   const applicationServerPublicKey = "BCNjV1hghSO5e2hfbXmYs9f-36kgnqQNj-vvUFGD6UBRQwD2i3RrCHmejzRsJRolQY6CSdPjglE3hHlFmkdGNZQ";
   const applicationServerKey = urlBase64ToUint8Array(applicationServerPublicKey);
-  swRegistration.pushManager.subscribe({
+  console.log(swRegistration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: applicationServerKey
   })
   // 用户同意
   .then(function(subscription) {
       console.log('User is subscribed:', JSON.stringify(subscription));
+      updateSubscription(subscription)
   })
   // 用户不同意或者生成失败
   .catch(function(err) {
       console.log('Failed to subscribe the user: ', err);
-  });
+  }));
 }
 
 if ('serviceWorker' in navigator) {
@@ -62,7 +64,7 @@ if ('serviceWorker' in navigator) {
         swReg.pushManager.getSubscription()
         .then(subscription => {
           if (subscription) {
-            console.log('already subscription')
+            console.log('already subscription', subscription)
           } else {
             console.log('user didn\'t subscription, start subscription now')
             subscriptionUser(swReg)
