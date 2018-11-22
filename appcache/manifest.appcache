@@ -1,16 +1,17 @@
 CACHE MANIFEST
-#ver:2018-10-8 15:17:10
+#ver:2018/11/23 上午1:28:12
 #plugin:4.9.1
 
 CACHE:
-./static/js/vendor.e5447f1cb644ee07067c.js
-./static/js/app.8a284a23abcc91d39a5e.js
+./static/js/vendor.6b9ee816ba77cc4f93a7.js
+./static/js/app.aa639adbca6cf86ec54c.js
 ./static/js/manifest.3ad1d5771e9b13dbdad2.js
-./static/css/app.6c11a512773eb06b7505fb109a3ee029.css
+./static/css/app.a46ab21606ac779654033a961c0751a0.css
 ./icon_256x256.png
 ./manifest.json
 ./icon.png
 ./
+./static/sw.js
 
 NETWORK:
 *
