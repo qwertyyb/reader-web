@@ -1,5 +1,5 @@
 <template>
-  <view-box>
+  <view-box body-padding-bottom="0" class="detail-page">
     <x-header slot="header" :left-options="{backText: ''}">{{title}}</x-header>
     <main class="detail-container" id="detail" v-html="content"/>
   </view-box>
@@ -88,6 +88,9 @@ export default {
 <style>
 .loading {
   margin-top: 46px;
+  height: calc(100vh - 46px);
+}
+.detail-page #vux_view_box_body {
   height: calc(100vh - 46px);
 }
 /*  */
@@ -384,18 +387,21 @@ ol {
 }
 
 .view-more {
-  margin-bottom: 25px;
+  margin: 0 auto 25px auto;
   text-align: center;
+  width: 160px;
+  background: #06d4f0;
+  box-shadow: 0 4px 16px #bbb;
+  border-radius: 15px;
 }
 
 .view-more a {
   font-size: 16px;
   display: inline-block;
-  width: 125px;
+  width: 80px;
   height: 30px;
   line-height: 30px;
-  background: #f0f0f0;
-  color: #B8B8B8;
+  color: #fff;
 }
 
 .question {

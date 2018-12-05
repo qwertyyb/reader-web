@@ -1,34 +1,12 @@
 <template>
-  <Drawer
-    :show.sync="drawerVisible"
-    show-mode="push"
-  >
-    <template slot="drawer">
-      <div class="drawer-menu">页面建设中</div>
-    </template>
-    <keep-alive>
-      <router-view @toggleDrawerVisible="toggleDrawerVisible"></router-view>
-    </keep-alive>
-  </Drawer>
+  <keep-alive include="IndexPage">
+    <router-view></router-view>
+  </keep-alive>
 </template>
 
 <script>
-import { Drawer } from 'vux'
 export default {
-  name: 'App',
-  components: {
-    Drawer
-  },
-  data() {
-    return {
-      drawerVisible: false
-    }
-  },
-  methods: {
-    toggleDrawerVisible() {
-      this.drawerVisible = !this.drawerVisible
-    }
-  }
+  name: 'App'
 }
 </script>
 

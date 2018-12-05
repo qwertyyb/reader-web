@@ -3,10 +3,8 @@
     <x-header slot="header"
       style="width:100%;position:absolute;left:0;top:0;z-index:100;"
       @click.native="toggleDrawerVisible"
+      :left-options="{showBack: false}"
     >
-      <template slot="overwrite-left">
-        <x-icon type="menu" class="icon-menu"></x-icon>
-      </template>
     知乎日报</x-header>
     <tab v-model="activedTab" @on-index-change="onSwiperIndexChange">
       <tab-item v-for="tabItem in tabItems" :key="tabItem">{{tabItem}}</tab-item>
@@ -157,6 +155,9 @@ export default {
 }
 </script>
 <style>
+.weui-panel.weui-panel_access {
+  margin-top: 0;
+}
 .weui-media-box__title {
   margin-bottom: 8px;
 }
