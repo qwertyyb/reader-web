@@ -11,11 +11,9 @@ self.addEventListener('notificationclick', function(event) {
   const notification = event.notification
   console.log(notification)
   const { data: { url } = {} } = notification
-  if (url) {
-    event.waitUntil(
-      clients.openWindow(url)
-    )
-  } else {
-    event.notification.close();
-  }
+  url && event.waitUntil(
+    clients.openWindow(url)
+  )
+    
+  event.notification.close();
 });
