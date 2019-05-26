@@ -2,13 +2,20 @@ self.addEventListener('push', e => {
   console.log('[Service Worker] Push event: ', e)
   console.log('[Service Worker] Push data: ', e.data.text())
 
-  const { title, options: extraOptions } = e.data.json()
-  const { url, ...options } = extraOptions
+  const { title, options } = e.data.json()
   const notification = self.registration.showNotification(title, { ...options })
-  notification.onclick = () => {
-    url && event.waitUntil(
+})
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.', event);
+  const notification = event.notification
+  console.log(notification)
+  const { data: { url } = {} } = notification
+  if (url) {
+    event.waitUntil(
       clients.openWindow(url)
     )
+  } else {
+    event.notification.close();
   }
-
-})
+});
